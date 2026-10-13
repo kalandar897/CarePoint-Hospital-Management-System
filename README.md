@@ -139,4 +139,4 @@ Use **People → Create account** to add doctor, receptionist, and patient accou
 
 **Kalandar Babu**
 
-GitHub: [Add your GitHub profile URL here.](https://github.com/settings/profile)
+GitHub: [MY GITHUB.](https://github.com/settings/profile)
