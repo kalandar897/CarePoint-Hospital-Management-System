@@ -1,0 +1,43 @@
+{% extends 'hospital/base.html' %}
+{% block title %}
+Doctors | CarePoint
+{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">OUR MEDICAL TEAM</span>
+        <h1>Find a doctor</h1>
+        <p>Browse doctors currently available for appointment requests.</p>
+    </div>
+</section>
+<div class="doctor-grid">
+    {% for doctor in doctors %}
+    <article class="doctor-card">
+        <div class="doctor-avatar">
+            {{ doctor.first_name|default:doctor.username|first|upper }}
+        </div>
+        <div class="doctor-content">
+            <span class="availability"><i></i> Available for appointments</span>
+            <h2>Dr. {{ doctor.get_full_name|default:doctor.username }}</h2>
+            <p>{{ doctor.profile.specialization|default:'General practice' }}</p>
+            <div class="doctor-details">
+                <span>✉ {{ doctor.email|default:'Contact via reception' }}</span>
+                {% if doctor.profile.phone %}
+                    <span>☎ {{ doctor.profile.phone }}</span>
+                {% endif %}
+            </div>
+            {% if user.is_authenticated and role != 'DOCTOR' %}
+                <a class="text-link" href="{% url 'appointment_create' %}">Request a visit →</a>
+            {% endif %}
+        </div>
+    </article>
+    {% empty %}
+    <div class="empty-state panel">
+        <h3>No available doctors yet</h3>
+        <p>
+            Ask an administrator to create a doctor account and enable availability.
+        </p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

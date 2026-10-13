@@ -1,0 +1,64 @@
+{% extends 'hospital/base.html' %}
+{% block title %}
+{{ title }} | CarePoint
+{% endblock %}
+{% block content %}
+<div class="form-layout">
+    <div class="form-intro">
+        <span class="eyebrow">CAREPOINT PORTAL</span>
+        <h1>{{ title }}</h1>
+        <p>
+            {{ help_text|default:'Enter the information below. Required fields are
+            marked by your browser.' }}
+        </p>
+        <div class="form-side-note">
+            <span class="mini-icon">✚</span>
+            <div>
+                <strong>Secure by role</strong>
+                <p>Access is limited according to your account permissions.</p>
+            </div>
+        </div>
+    </div>
+    <section class="form-card">
+        
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="field-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <small class="help-text">{{ field.help_text }}</small>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">
+                    {{ submit_label|default:'Save' }} <span>→</span>
+                </button>
+
+                <a class="btn btn-light" href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'home' %}{% endif %}">
+                    Cancel
+                </a>
+            </div>
+        </form>
+
+        {% if hide_nav %}
+        <p class="form-bottom-note">
+            Demo access is created by your system administrator.
+        </p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

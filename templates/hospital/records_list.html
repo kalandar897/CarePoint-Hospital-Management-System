@@ -1,0 +1,58 @@
+{% extends 'hospital/base.html' %}
+{% block title %}
+Medical records | CarePoint
+{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">PATIENT CARE</span>
+        <h1>Medical records</h1>
+        <p>Visit diagnoses, treatment notes and clinical history.</p>
+    </div>
+    {% if role == 'ADMIN' or role == 'DOCTOR' %}
+        <a class="btn btn-primary" href="{% url 'record_create' %}">＋ Add record</a>
+    {% endif %}
+</section>
+<section class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Visit date</th>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Diagnosis</th>
+                    <th>Treatment / notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>
+                        {{ record.visit_date|date:'d M Y' }}
+                    </td>
+                    <td>
+                        {{ record.patient.get_full_name|default:record.patient.username }}
+                    </td>
+                    <td>
+                        {% if record.doctor %}Dr. {{ record.doctor.get_full_name|default:record.doctor.username }}{% else %}—{% endif %}
+                    </td>
+                    <td>
+                        <strong>{{ record.diagnosis }}</strong>
+                    </td>
+                    <td>
+                        {{ record.treatment|default:record.notes|default:'—'|truncatechars:100 }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-cell">
+                        No medical records found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

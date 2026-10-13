@@ -1,0 +1,82 @@
+{% extends 'hospital/base.html' %}
+{% block title %}
+Appointments | CarePoint
+{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">VISIT SCHEDULING</span>
+        <h1>Appointments</h1>
+        <p>Review scheduled visits and appointment requests.</p>
+    </div>
+    {% if role == 'PATIENT' or role == 'ADMIN' or role == 'RECEPTIONIST' %}
+    <a class="btn btn-primary" href="{% url 'appointment_create' %}">＋ Book appointment</a>
+    {% endif %}
+</section>
+<section class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date & time</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    {% if role == 'ADMIN' or role == 'RECEPTIONIST' or role == 'DOCTOR' %}
+                    <th>Update status</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in appointments %}
+                <tr>
+                    <td>
+                        {{ item.patient.get_full_name|default:item.patient.username }}
+                    </td>
+                    <td>
+                        Dr. {{ item.doctor.get_full_name|default:item.doctor.username }}
+                    </td>
+                    <td>
+                        {{ item.appointment_date|date:'d M Y' }}
+                        <small class="table-sub">
+                            {{ item.appointment_time|time:'H:i' }}
+                        </small>
+                    </td>
+                    <td>
+                        {{ item.reason|default:'—' }}</td>
+                    <td>
+                        <span class="status status-{{ item.status|lower }}">
+                            {{ item.get_status_display }}
+                        </span>
+                    </td>
+                    {% if role == 'ADMIN' or role == 'RECEPTIONIST' or role == 'DOCTOR' %}
+                    <td>
+                        <form method="post" action="{% url 'appointment_status' item.id %}" class="inline-form">
+                            {% csrf_token %}
+                            <select class="form-control compact-select" name="status" aria-label="Appointment status">
+                                {% for value,label in status_choices %}
+                                <option value="{{ value }}" {% if item.status == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <button class="btn btn-small btn-light" type="submit">
+                                Save
+                            </button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="{% if role == 'ADMIN' or role == 'RECEPTIONIST' or role == 'DOCTOR' %}6{% else %}5{% endif %}" class="empty-cell">
+                        No appointments found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}CarePoint HMS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'hospital/css/style.css' %}" />
+    <script defer src="{% static 'hospital/js/app.js' %}"></script>
+</head>
+
+<body>
+    <header class="topbar">
+        <a class="brand" href="{% url 'home' %}"><span class="brand-mark">+</span> CarePoint 
+            <small>HOSPITAL MANAGEMENT</small>
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+        <nav id="mainNav">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'appointments_list' %}">Appointments</a>
+                <a href="{% url 'doctors_list' %}">Doctors</a>
+                <a href="{% url 'records_list' %}">Medical records</a>
+                <a href="{% url 'bills_list' %}">Billing</a>
+                {% if role == 'ADMIN' or role == 'RECEPTIONIST' %}
+                    <a href="{% url 'users_list' %}">People</a>
+                {% endif %}
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button class="nav-logout" type="submit">
+                    Sign out
+                </button>
+            </form>
+            {% else %}
+                <a href="{% url 'login' %}">Sign in</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main class="page-shell">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer class="footer">
+        CarePoint HMS <span>•</span> Local development demo
+    </footer>
+</body>
+
+</html>

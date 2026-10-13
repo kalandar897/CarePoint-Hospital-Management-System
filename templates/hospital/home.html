@@ -1,0 +1,94 @@
+{% extends 'hospital/base.html' %}
+{% block title %}
+CarePoint HMS | Welcome
+{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <span class="eyebrow">CARE, CONNECTED</span>
+        <h1>Better care starts with <em>better coordination.</em></h1>
+        <p>
+            A simple, organized workspace for hospital teams to manage appointments,
+            patient records and billing in one place.
+        </p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="{% url 'login' %}">Sign in to portal <span>→</span></a>
+            <a class="btn btn-light" href="#features">Explore features</a>
+        </div>
+        <div class="hero-note">
+            <span class="status-dot"></span> One workspace for your care team
+        </div>
+    </div>
+    <div class="hero-art">
+        <div class="art-circle circle-one"></div>
+        <div class="art-circle circle-two"></div>
+        <div class="medical-card">
+            <div class="medical-card-top">
+                <span class="mini-icon">✚</span><span class="live-pill">PORTAL OVERVIEW</span>
+            </div>
+            <h3>CarePoint dashboard</h3>
+            <p>Care operations, clearly organized.</p>
+            <div class="fake-stat-row">
+                <div>
+                    <small>Appointments</small>
+                    <strong>Schedule</strong>
+                </div>
+                <div>
+                    <small>Patient care</small>
+                    <strong>Records</strong>
+                </div>
+            </div>
+            <div class="fake-chart">
+                <span style="height: 38%"></span>
+                <span style="height: 58%"></span>
+                <span style="height: 47%"></span>
+                <span style="height: 76%"></span>
+                <span style="height: 62%"></span>
+                <span style="height: 90%"></span>
+                <span style="height: 70%"></span>
+            </div>
+            <div class="card-foot">
+                <span class="avatar-stack"><i>DR</i><i>PT</i><i>AD</i></span>
+                <span>Connected care team</span>
+            </div>
+        </div>
+        <div class="floating-badge">
+            <span>✓</span> Organized care
+        </div>
+    </div>
+</section>
+<section class="features" id="features">
+    <div class="section-heading">
+        <span class="eyebrow">BUILT FOR EVERYDAY CARE</span>
+        <h2>Everything in its right place.</h2>
+        <p>Purposeful tools for common hospital workflows.</p>
+    </div>
+    <div class="feature-grid">
+        <article class="feature-card">
+            <div class="feature-icon mint">▦</div>
+            <h3>Appointments</h3>
+            <p>
+                Schedule visits, manage requests and keep track of appointment status.
+            </p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon blue">♡</div>
+            <h3>Patient records</h3>
+            <p>Keep diagnoses, treatment notes and visit details together.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon peach">₹</div>
+            <h3>Billing</h3>
+            <p>Track bill amounts, payments and outstanding balances.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon lavender">✚</div>
+            <h3>Team access</h3>
+            <p>
+                Separate workflows for administrators, doctors, receptionists and
+                patients.
+            </p>
+        </article>
+    </div>
+</section>
+{% endblock %}

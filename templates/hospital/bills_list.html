@@ -1,0 +1,61 @@
+{% extends 'hospital/base.html' %}
+{% block title %}
+Billing | CarePoint
+{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">FINANCIAL OVERVIEW</span>
+        <h1>Billing</h1>
+        <p>View bills, payment progress and outstanding balances.</p>
+    </div>
+    {% if role == 'ADMIN' or role == 'RECEPTIONIST' %}
+    <a class="btn btn-primary" href="{% url 'bill_create' %}">＋ Create bill</a>
+    {% endif %}
+</section>
+<section class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Bill</th>
+                    <th>Patient</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Paid</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td>#{{ bill.id }}</td>
+                    <td>
+                        {{ bill.patient.get_full_name|default:bill.patient.username }}
+                    </td>
+                    <td>{{ bill.description }}</td>
+                    <td>₹{{ bill.amount|floatformat:2 }}</td>
+                    <td>₹{{ bill.amount_paid|floatformat:2 }}</td>
+                    <td>₹{{ bill.balance|floatformat:2 }}</td>
+                    <td>
+                        <span
+                            class="status status-{% if bill.payment_status == 'PAID' %}confirmed{% elif bill.payment_status == 'PARTIAL' %}requested{% else %}cancelled{% endif %}">
+                            {{bill.get_payment_status_display }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="empty-cell">No bills found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p class="table-hint">
+        Payment status is tracked for demonstration; this application does not
+        process real payments.
+    </p>
+</section>
+{% endblock %}
